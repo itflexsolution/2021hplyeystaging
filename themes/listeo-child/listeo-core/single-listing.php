@@ -638,7 +638,9 @@ $reviewsarr[]=array('@type'=>'Review','author'=>$authorname,'datePublished'=>$pu
 }
 
 $reviews_snippet= json_encode($reviewsarr);
-?>
+
+if($roundrating!=0){ ?>
+	
 <script type="application/ld+json">
   {
     "@context": "http://schema.org",
@@ -665,6 +667,9 @@ $reviews_snippet= json_encode($reviewsarr);
     
   }
 </script>
+
+<?php }  ?>
+
 <!-- Google snippet / end -->
 <?php
 echo do_shortcode( '[elementor-template id="29949"]' );?>
