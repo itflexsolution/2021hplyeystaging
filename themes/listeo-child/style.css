@@ -2777,3 +2777,16 @@ p.mem-bdg:before {
 }
 
 /* ratings add reviews box end */
+
+
+/* reviews below title start */
+
+span.cus_address {
+    display: block !important;
+}
+
+span.cus_address + .star-rating {
+    display: inline;
+}
+
+/* reviews below title end */
