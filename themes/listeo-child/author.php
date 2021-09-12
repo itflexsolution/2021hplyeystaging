@@ -447,6 +447,68 @@ exit();*/
 				</div>
 			<?php endif; ?>
 
+			<!-- Start wishlist -->
+			<div class="listeo_wishlist_sec" id="wishlist">
+			<?php
+				if( is_user_logged_in() ) {
+					$userID = get_current_user_id();
+					$current_user_wishlist = get_user_meta( $userID, 'listeo_user_wishlist',true);
+					if( !empty( $current_user_wishlist ) ){
+						
+						?> <h3 class="margin-top-40 margin-bottom-20"><?php esc_html_e('Wish List','listeo'); ?></h3> <?php
+						$wishlist_counter = 0;
+						foreach( $current_user_wishlist as $key => $user_wishlist ){
+							if( !empty($user_wishlist) ){
+								$wishlist_counter++;
+								$count_wishlist = count($user_wishlist);
+				               	
+				               	$listeo_wishlist_html = '<div class="row">';
+							 	foreach( $user_wishlist as $list_id ){
+							 		$temp_list_get_first_img_url = "";
+					       			$temp_list_get_first_img = (array) get_post_meta( $list_id, '_gallery', true );
+					       			$list_url = get_permalink( $list_id );
+					       			$list_title = get_the_title( $list_id );
+				      				foreach ( (array) $temp_list_get_first_img as $attachment_id => $attachment_url ) {
+				         				$list_img = wp_get_attachment_image_src( $attachment_id, 'listeo-gallery' );
+				            			$temp_list_get_first_img_url = esc_attr($list_img[0]);
+				            			break;
+				      				}
+
+				   					$listeo_wishlist_html .='
+				   						<div class="col-lg-4 col-md-4 listeo_wishli_single_grid">
+				   							<a href="'.$list_url.'"> 
+				   								<img width="200" height="200" src="'.$temp_list_get_first_img_url.'">
+				   							</a>
+				   						</div>
+				   					';
+							 	}
+							 	$listeo_wishlist_html .='</div>';
+
+								?>
+
+								<div class="col-lg-4 col-md-4 listeo_wishli_single_grid">
+									<a data-wishlist_key="<?php echo $key; ?>" href="#listeo_listing_wishlist_pop_<?php echo $wishlist_counter; ?>" class="listeo_wishlist_pop_open popup-with-zoom-anim">
+										<img width="200" height="200" src="<?php echo $temp_list_get_first_img_url; ?>">
+										<h4> <?php echo $key; ?> </h4>
+										<span class="count_wishlist"> <?php echo $count_wishlist; ?> Pins </span>
+									</a>
+								</div>
+
+								<div id="listeo_listing_wishlist_pop_<?php echo $wishlist_counter; ?>" class="listeo_listing_wishlist_pop zoom-anim-dialog mfp-hide listeo-dialog ">
+									<center style="padding: 20px;padding-bottom: 40px;"> <h1> <?php echo $key; ?> </h1> </center>
+									<div class="listeo_listing_wishlist_pop_body margin-top-0">
+										<?php echo $listeo_wishlist_html; ?>
+									</div>
+									<button title="Close (Esc)" type="button" class="mfp-close"></button>
+								</div>
+							<?php }
+						}
+					}
+				}
+			?>
+			</div>
+			<!-- End wishlist -->
+
 		</div>
 
 	</div>
