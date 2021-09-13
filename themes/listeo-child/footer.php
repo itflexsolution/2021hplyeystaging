@@ -179,3 +179,61 @@ jQuery(function($){
 	});
 
 </script>
+
+<div id="listeo_wishlist_popup" class="zoom-anim-dialog mfp-hide listeo-dialog ">
+	<div class="small-dialog-header">
+		<center><h3 class="listeo_wishlist_header_title"> Your board </h3></center>
+	</div>
+	<div class="listeo_wishlist_popup_body margin-top-0">
+		<div class="listeo_wishlist_popup_right">
+			<img class="listeo_wishlist_popup_right_img" width="250" height="300" src="https://52.63.85.48/wp-content/uploads/2021/05/181620074_311797347013359_950217712658517380_n-scaled.jpg">
+		</div>
+		<div class="listeo_wishlist_popup_left">
+			<div class="current_user_wishlist_main">
+				<?php
+					if(is_user_logged_in()){
+						$userID = get_current_user_id();
+						$current_user_wishlist = get_user_meta( $userID, 'listeo_user_wishlist',true);
+
+						if( !empty( $current_user_wishlist ) ){
+							foreach( $current_user_wishlist as $key => $user_wishlist ){
+               					if( !empty($user_wishlist) ){
+					               	foreach( $user_wishlist as $list_id ){
+								 		$temp_list_get_first_img_url = "";
+						       			$temp_list_get_first_img = (array) get_post_meta( $list_id, '_gallery', true );
+					      				foreach ( (array) $temp_list_get_first_img as $attachment_id => $attachment_url ) {
+					         				$list_img = wp_get_attachment_image_src( $attachment_id, 'listeo-gallery' );
+					            			$temp_list_get_first_img_url = esc_attr($list_img[0]);
+					            			break;
+					      				}
+					            		break;
+								 	} ?>
+									<div class="current_user_wishlist">
+										<a href="javascript:;">
+											<img width="50" height="50" src="<?php echo $temp_list_get_first_img_url; ?>">
+											<span class="current_user_wishlist_name"> <?php echo $key; ?> </span>
+											<span data-bookmark_name="<?php echo $key; ?>" class="save_listing_wishlist_name_btn" style=""> save </span>
+										</a>
+									</div>
+									<?php
+								}
+							}
+						}
+					}
+				?>
+			</div>
+			<div class="create_new_wishlist_btn_main">
+				<button class="button listeo_create_new_wishlist_btn">
+					<i class="fa fa-plus" aria-hidden="true"></i> Create board
+				</button>
+			</div>
+			<div style="display:none;" class="listeo_save_new_wishlist_sec">
+				<input placeholder="Name" type="text" name="listeo_new_wishlist_name" class="listeo_new_wishlist_name" style="margin-bottom:0px;">
+				<p class="listeo_new_wishlist_name_err" style="display:none;color: red;">Please enter name</p>
+				<button style="width:100%;margin-top: 30px;" class="button listeo_save_new_wishlist_btn">Create</button>
+			</div>
+		</div>
+	</div>
+	<button title="Close (Esc)" type="button" class="mfp-close mfp_close_wishlist_defualt"></button>
+	<button style="display:none;" title="Close (Esc)" type="button" class="mfp_close_wishlist listeo_close_new_wishlist_sec"></button>
+</div>

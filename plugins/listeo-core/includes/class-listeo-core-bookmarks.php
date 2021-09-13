@@ -16,6 +16,12 @@ class Listeo_Core_Bookmarks {
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'frontend_scripts' ) );
 		add_shortcode( 'listeo_bookmarks', array( $this, 'listeo_bookmarks' ) );
+
+		add_action('wp_ajax_listeo_core_create_bookmark', array($this, 'create_bookmark'));
+		add_action('wp_ajax_nopriv_listeo_core_create_bookmark', array($this, 'create_bookmark'));
+
+		add_action('wp_ajax_listeo_core_remove_listing_from_bookmark', array($this, 'remove_listing_from_bookmark'));
+		add_action('wp_ajax_nopriv_listeo_core_remove_listing_from_bookmark', array($this, 'remove_listing_from_bookmark'));
 	}
 
 	/**
@@ -161,6 +167,100 @@ class Listeo_Core_Bookmarks {
 		return ob_get_clean();
 	}
 
+	public function create_bookmark(){
 
+		if(is_user_logged_in()){
+			$userID = $this->get_user_id();
+			$bookmark_name = $_POST['bookmark_name'];
+			$listing_id = $_POST['listing_id'];
+
+			$this->remove_listing_from_wishlist($userID,$listing_id);
+
+			$current_user_wishlist = get_user_meta( $userID, 'listeo_user_wishlist',true);
+			if( !empty($current_user_wishlist) ){
+				if( array_key_exists($bookmark_name, $current_user_wishlist) ){
+					$listing_ids = $current_user_wishlist[$bookmark_name];
+					if ( !in_array($listing_id, $listing_ids) ) {
+						array_push($listing_ids, $listing_id);
+					}
+					$current_user_wishlist[$bookmark_name] = $listing_ids;
+				}
+				else{
+					$listing_id_arr = array($listing_id);
+					$current_user_wishlist[ $bookmark_name ] = $listing_id_arr;
+				}
+				update_user_meta( $userID, 'listeo_user_wishlist', $current_user_wishlist );
+			}
+			else{
+				$listing_id_arr = array($listing_id);
+				$user_wishlist = array( $bookmark_name => $listing_id_arr );
+				update_user_meta( $userID, 'listeo_user_wishlist', $user_wishlist );
+			}
+
+			$current_user_wishlist = get_user_meta( $userID, 'listeo_user_wishlist',true);
+			$current_user_wishlist_main = "";
+			foreach( $current_user_wishlist as $key => $user_wishlist ){
+       			
+       			if( !empty($user_wishlist) ){
+	               	foreach( $user_wishlist as $list_id ){
+				 		$temp_list_get_first_img_url = "";
+		       			$temp_list_get_first_img = (array) get_post_meta( $list_id, '_gallery', true );
+	      				foreach ( (array) $temp_list_get_first_img as $attachment_id => $attachment_url ) {
+	         				$list_img = wp_get_attachment_image_src( $attachment_id, 'listeo-gallery' );
+	            			$temp_list_get_first_img_url = esc_attr($list_img[0]);
+	            			break;
+	      				}
+	            		break;
+				 	}
+					$current_user_wishlist_main.= '<div class="current_user_wishlist">
+						<a href="javascript:;">
+							<img width="50" height="50" src="'.$temp_list_get_first_img_url.'">
+							<span class="current_user_wishlist_name">'.$key.'</span>
+							<span data-bookmark_name="'.$key.'" class="save_listing_wishlist_name_btn" style=""> save </span>
+						</a>
+					</div>';
+				}
+			}
+
+			$result['success'] = 1;
+			$result['current_user_wishlist_main'] = $current_user_wishlist_main;
+		}
+		else{
+			$result['success'] = 0;
+		}
+		
+		wp_send_json($result);
+		die();
+	}
+
+	public function remove_listing_from_bookmark(){
+
+		if(is_user_logged_in()){
+			$userID = $this->get_user_id();
+			$listing_id = $_POST['listing_id'];
+			$this->remove_listing_from_wishlist($userID,$listing_id);
+			$result['success'] = 1;
+		}
+		else{
+			$result['success'] = 0;
+		}
+		wp_send_json($result);
+		die();
+	}
+
+	function remove_listing_from_wishlist( $userID, $listing_id){
+		if( $userID != "" && $listing_id != "" ){
+			$current_user_wishlist = get_user_meta( $userID, 'listeo_user_wishlist',true);
+			if( !empty( $current_user_wishlist ) ){
+				foreach( $current_user_wishlist as $keyy => $user_wishlist ){
+					if (($key = array_search($listing_id, $user_wishlist)) !== false) {
+					    unset($user_wishlist[$key]);
+					    $current_user_wishlist[$keyy] = $user_wishlist;
+					}
+				}
+				update_user_meta( $userID, 'listeo_user_wishlist', $current_user_wishlist );
+			}
+		}
+	}
 
 }

@@ -73,6 +73,13 @@ $my_account_display = get_option('listeo_my_account_display', true );
 			<?php endif; ?>
 		<?php endif; ?>
 
+		<?php $author_url = get_author_posts_url( get_current_user_id() ); ?>
+		<li> 
+			<a href="<?php echo $author_url; ?>" class="">
+				<?php esc_html_e('My Wishlist', 'listeo'); ?> <i class="sl sl-icon-plus"></i>
+			</a>
+		</li>
+
 		<?php if(!in_array($role,array('owner'))) : ?>
 			<?php $profile_page = get_option('listeo_profile_page');  if( $profile_page ) : ?>
 			<li><a href="<?php echo esc_url(get_permalink($profile_page)); ?>"><i class="sl sl-icon-user"></i> <?php esc_html_e('My Profile','listeo_core');?></a></li>

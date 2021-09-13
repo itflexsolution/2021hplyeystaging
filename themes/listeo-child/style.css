@@ -2357,6 +2357,224 @@ border: 0px solid #dbdbdb;
      margin-top: 0px !important;
  }
 
+ /*listeo custom wishlist*/
+/*.listeo_custom_wishlist_main{
+    visibility: hidden;
+}*/
+.listeo_custom_wishlist_main a{
+    visibility: hidden;
+    color: white !important;
+    position: absolute;
+    top: 15px;
+    z-index: 1;
+    /*background-color: #ff7465;*/
+    /*background-color: #e60023;*/
+    color: #424242;
+    height: auto;
+    padding: 5px 15px 5px 15px !important;
+    border-radius: 10px;
+    right: 7px;
+}
+.listeo_custom_wishlist_main .listeo_change_wishlist{
+    background-color: unset !important;
+    margin-right: 80px;
+    font-weight: bolder;
+}
+.listeo_change_wishlist:after{
+    font-family: 'FontAwesome';
+    content: "\f107";
+    -webkit-transform: translate(0, 0);
+    transform: translate(-50%, 0%);
+}
+.listeo_grid_view_item:hover .listeo_custom_wishlist_main a{
+   visibility: visible;
+}
+#listeo_wishlist_popup{
+    max-width: 800px !important;
+}
+#listeo_wishlist_popup .listeo_wishlist_popup_body{
+    contain: content;
+}
+#listeo_wishlist_popup .listeo_wishlist_popup_right{
+    width: 40%;
+    /*display: inline-block;*/
+    float: left;
+    margin-left: 15PX;
+}
+#listeo_wishlist_popup .listeo_wishlist_popup_left{
+    width: 55%;
+    float: left;
+    /*display: inline-block;*/
+}
+#listeo_wishlist_popup .listeo_wishlist_popup_right img{
+    border-radius: 20px;
+}
+#listeo_wishlist_popup .current_user_wishlist{
+    margin-bottom: 15px;
+    padding: 10px;
+}
+#listeo_wishlist_popup .current_user_wishlist:hover{
+    background-color: #f6f6f6;
+}
+
+#listeo_wishlist_popup .current_user_wishlist:hover{
+    background-color: #f6f6f6;
+}
+#listeo_wishlist_popup .current_user_wishlist:hover .save_listing_wishlist_name_btn{
+    visibility: visible;
+}
+#listeo_wishlist_popup .current_user_wishlist img{
+    border-radius: 10px;
+}
+#listeo_wishlist_popup .current_user_wishlist .current_user_wishlist_name{
+    color: rgb(34, 34, 34);
+    font-weight: 600 !important;
+    margin-left: 8px;
+}
+#listeo_wishlist_popup .current_user_wishlist .save_listing_wishlist_name_btn{
+    float: right;
+    margin-top: 5px;
+    border: 1px solid;
+    padding: 5px 10px;
+    color: white;
+    background-color: #e60023;
+    border-radius: 10px;
+    visibility: hidden;
+}
+.mfp_close_wishlist{
+    color: #666;
+    background-color: #e4e4e4;
+    border-radius: 50%;
+    top: 28px;
+    right: 40px;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    border: 1px;
+}
+.mfp_close_wishlist:before{
+    content: "\f107";
+    -webkit-transform: translate(0, 0);
+    transform: translate(-50%, 0%);
+}
+.mfp_close_wishlist:after{
+    content: "\f106";
+    -webkit-transform: translate(0, 0);
+    transform: translate(-50%, 60%);
+}
+.mfp_close_wishlist:before, .mfp_close_wishlist:after{
+    top: 4px;
+    height: 9px;
+    font-size: 21px;
+    transition: 0s;
+    font-family: "FontAwesome";
+    position: absolute;
+}
+.mfp_close_wishlist:hover{
+    background-color: #f65a5f;
+    color: #fff;
+    transform: rotate(0);
+}
+.listeo_custom_loading{
+    position: relative;
+}
+.listeo_custom_loading:after{
+    content: url("/wp-content/themes/listeo-child/img/ajax_spinner25.gif");
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -10px;
+    margin-top: -10px;
+    display: block;
+}
+.wishlist_like_icon2.listeo_custom_loading:after{
+    margin-left: -13px !important;
+    margin-top: -11px !important;
+}
+.listeo_save_new_wishlist_btn:disabled{
+    cursor: not-allowed;
+    background-color: #e6aaa4;
+}
+.listeo_create_new_wishlist_btn{
+    margin-left: 10px;
+    border-radius: 10px !important;
+}
+.listeo_wishli_single_grid{
+    padding-left: 0px;
+    padding-right: 20px;
+    margin-bottom: 20px;
+}
+.listeo_wishli_single_grid h4{
+    margin-bottom: 3px !important;
+}
+.listeo_wishli_single_grid span{
+    color: black !important;
+}
+.listeo_listing_wishlist_pop{
+    max-width: 800px !important;
+}
+.listeo_wishlist_sec img{
+    object-fit: cover;
+}
+#listeo_wishlist_popup img{
+    object-fit: cover;
+}
+.wishlist_logged_save_mobile,.wishlist_logged_saved_mobile{
+    font-family: "FontAwesome";
+    font-size: 20px;
+}
+/*End Custom Wishlist*/
+
+/*Start Search listing redesign*/
+.wishlist_like_icon{
+    position: relative;
+    display: block;
+    border-radius: 50%;
+    line-height: 19px;
+    font-size: 19px;
+    height: 34px;
+    width: 34px;
+    /*background-color: #e60023;*/
+    background-color: #f3103c9c;
+}
+.wishlist_like_icon:before {
+    content: "\f08a";
+    transform: scale(0.95);
+}
+.wishlist_like_icon:before, .wishlist_like_icon:after {
+    transition: opacity 0.3s, transform 0.4s cubic-bezier(0, -0.41, 0.19, 2.5);
+    font-family: "FontAwesome";
+    position: absolute;
+    right: 0;
+    left: 0;
+    text-align: center;
+    top: 9px;
+}
+.wishlist_like_icon:after {
+    content: "\f004";
+    opacity: 0;
+    transform: scale(0.5);
+}
+.wishlist_like_icon.saved {
+    background-color: #f3103c9c;
+    color: white;
+}
+.wishlist_like_icon:hover::after{
+    opacity: 1;
+    transform: scale(0.95);
+}
+.wishlist_like_icon.saved:hover::after{
+    opacity: 0;
+}
+.wishlist_like_icon.saved:after {
+    opacity: 1;
+    transform: scale(0.95);
+}
+
  /*message style fix*/
 .pagination ul li{
     text-align: center !important;
@@ -2382,6 +2600,10 @@ border: 0px solid #dbdbdb;
     border-bottom-left-radius:10px;
     border-top-right-radius:10px;
     border-bottom-right-radius:10px;
+}
+
+#breadcrumbs{
+    top: 25% !important;
 }
 
 @media (max-width: 768px){ 
@@ -2425,6 +2647,31 @@ border: 0px solid #dbdbdb;
         border-top-right-radius:0px;
         border-bottom-right-radius:0px;
     }
+    .listeo_custom_wishlist_main a{
+        visibility: visible !important;
+        padding: 5px 10px 5px 10px !important;
+    }
+    .listeo_custom_wishlist_main .wishlist_logged_save_desktop{
+        display: none !important;
+    }
+    .listeo_custom_wishlist_main .wishlist_logged_save_mobile{
+        display: block !important;
+    }
+    .listeo_custom_wishlist_main .wishlist_logged_saved_desktop{
+        display: none !important;
+    }
+    .listeo_custom_wishlist_main .wishlist_logged_saved_mobile{
+        display: block !important;
+    }
+    #listeo_wishlist_popup .current_user_wishlist .save_listing_wishlist_name_btn{
+        visibility: visible !important;
+    }
+    .listeo_wishlist_popup_body .listeo_wishlist_popup_right{
+        display: none !important;
+    }
+    #listeo_wishlist_popup .listeo_wishlist_popup_left{
+        width: 100% !important;
+    }
 }
 @media (min-width: 768px) and (max-width: 992px) { 
     #listeo_gallery_desktop{
@@ -2440,14 +2687,14 @@ border: 0px solid #dbdbdb;
         padding-left: 50px;
         padding-right: 10px;        
     }
-    .listeo_gallery_img_1, .listeo_gallery_img_2{
+    /*.listeo_gallery_img_1, .listeo_gallery_img_2{
         display: none;
     }
     .listeo_gallery_img_3 img, .listeo_gallery_img_4 img{
         height: 510px;
         border-top-right-radius:10px;
         border-bottom-right-radius:10px;
-    }
+    }*/
     .listeo_gallery_show_all_btn_min{
         position: absolute;
         right: 24px;
@@ -2462,6 +2709,25 @@ border: 0px solid #dbdbdb;
     }
     #listeo_direct_fb_style_msg_success{
         font-size: 14px !important;
+    }
+    .listeo_custom_wishlist_main a{
+        visibility: visible !important;
+        padding: 5px 10px 5px 10px !important;
+    }
+    .listeo_custom_wishlist_main .wishlist_logged_save_desktop{
+        display: none !important;
+    }
+    .listeo_custom_wishlist_main .wishlist_logged_save_mobile{
+        display: block !important;
+    }
+    .listeo_custom_wishlist_main .wishlist_logged_saved_desktop{
+        display: none !important;
+    }
+    .listeo_custom_wishlist_main .wishlist_logged_saved_mobile{
+        display: block !important;
+    }
+    #listeo_wishlist_popup .current_user_wishlist .save_listing_wishlist_name_btn{
+        visibility: visible !important;
     }
 }
 
@@ -2525,7 +2791,7 @@ border: 0px solid #dbdbdb;
     float: right;
     padding-right: 0px;}
 
-p.mem-bdg:before {content: "";background-image: url("/wp-content/themes/listeo-child/img/security-star-green.png");
+p.mem-bdg:before {content: "";background-image: url("https://hypley.com/wp-content/uploads/2021/08/security-star-green.png");
     height: 23px;
     width: 25px;
     position: relative;

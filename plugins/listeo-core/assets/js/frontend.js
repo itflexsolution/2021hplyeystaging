@@ -844,9 +844,9 @@
 
 
           var form_data = new FormData();
-          //for(i=0; i<file_obj.length; i++) {
-          //  form_data.append('file[]', file_obj[i]);
-          //}
+          for(i=0; i<file_obj.length; i++) {
+           form_data.append('file[]', file_obj[i]);
+          }
 
           //Check if email has some email and phone number
           var emailExp = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/img;
@@ -862,7 +862,7 @@
           var siteUrlExp=/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/img;
           // message = message.replace(siteUrlExp, '-------');
 
-          if(emailExp.test(message)|| phoneExp.test(message) || phoneExp1.test(message) || phoneExp2.test(message) || siteUrlExp.test(message) || CheckUrl(message)){
+          if(emailExp.test(message)|| phoneExp.test(message) || phoneExp1.test(message) || phoneExp2.test(message) || siteUrlExp.test(message) || CheckUrl(message) || filter_hyply_chat_message(message) == 1 ){
             console.log("detected");
               // var listeo_msg_err = '<div style="margin-top: 5px; display: block!important" class="listeo_msg_err notification error listing-manager-error">'+
               //                         'Websites, emails and phone numbers aren’t allowed in message. To keep Hypley users and yourself safe from phishing, scraping etc please remove to continue publishing your message.'+
@@ -892,6 +892,10 @@
                     success: function(data){
                         // clear the message box
                         $('#contact-message').val('');
+
+                        // clear form files
+                        $('#fileInput').val('');
+
                         // clear the uploaded image
                         $('.selected-files').html('');
                         //console.log(data);
@@ -2308,23 +2312,194 @@
         }
     });
 
+    //Stop Progress redirect slick prev
+    $("body").on('click','.slick-prev',function(e){
+          e.stopPropagation();
+    });
+
+    //Stop Progress redirect slick next
+    $("body").on('click','.slick-next',function(e){
+          e.stopPropagation();
+    });
+
+    // Stop Progress redirect popup
+    $("body").on('click','.popup-with-zoom-anim',function(e){
+          e.stopPropagation();
+    });
+
+    //Stop Progress redirect bookmark
+    $("body").on('click','.like-icon',function(e){
+          e.stopPropagation();
+    });
+
+    //Stop Progress redirect two tab
+    $("body").on('click','.listeo_liting_single_galary_image',function(e){
+          e.stopPropagation();
+    });
+
+    // Bottom click issue fix
     $("body").on('click','.listeo_grid_view_item',function(e){
+        //console.log("single click");
         var url = $(this).data('link');
         window.open(url, '_blank');
     });
 
-    $("body").on('click','.slick-prev',function(e){
+    /* Custom Wishlist Start */
+    $("body").on('click','.listeo_custom_wishlist_main',function(e){
           e.stopPropagation();
+          e.preventDefault();
     });
-    $("body").on('click','.slick-next',function(e){
+    $("body").on('click','.listeo_custom_wishlist_btn',function(e){
           e.stopPropagation();
+          e.preventDefault();
+          var post_id = $(this).data('post_id');
+          var img_url = $(this).data('img_url');
+          $(".listeo_save_new_wishlist_btn").attr("post_id",post_id);
+          $(".save_listing_wishlist_name_btn").attr("data-listing_id",post_id);
+          $(".listeo_wishlist_popup_right_img").attr("src",img_url);
     });
-    $("body").on('click','.popup-with-zoom-anim',function(e){
-          e.stopPropagation();
+    
+    // Open create new wishlist sec
+    $("body").on('click','.listeo_create_new_wishlist_btn',function(e){
+      $(this).hide();
+      $(".listeo_wishlist_header_title").text('Create board');
+      $(".listeo_save_new_wishlist_sec").show();
+      $(".mfp_close_wishlist_defualt").hide();
+      $(".listeo_close_new_wishlist_sec").show();
     });
-    $("body").on('click','.like-icon',function(e){
-          e.stopPropagation();
+
+    // Close create new wishlist sec
+    $("body").on('click','.mfp_close_wishlist',function(e){
+      $(".listeo_wishlist_header_title").text('Your board');
+      $(".listeo_create_new_wishlist_btn").show();
+      $(".listeo_save_new_wishlist_sec").hide();
+      $(".listeo_close_new_wishlist_sec").hide();
+      $(".mfp_close_wishlist_defualt").show();
     });
+
+    $('body').on('keyup', ".listeo_new_wishlist_name", function(e){
+        if( $(this).val() == ""){
+            $(".listeo_new_wishlist_name_err").show();
+            $(".listeo_save_new_wishlist_btn").prop('disabled',true);
+        }
+        else{
+            $(".listeo_new_wishlist_name_err").hide();
+            $(".listeo_save_new_wishlist_btn").prop('disabled',false);
+        }
+    });
+
+    // Create new bookmark and add listing
+    $("body").on('click','.listeo_save_new_wishlist_btn',function(e){
+        var thisobj = $(this);
+        $(thisobj).prop('disabled',true);
+        $(thisobj).addClass('listeo_custom_loading');
+        var bookmark_name = $(".listeo_new_wishlist_name").val();
+        var listing_id = $(this).attr('post_id');
+        if( bookmark_name != "" ) {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: listeo.ajaxurl,
+                data   : {
+                  action: "listeo_core_create_bookmark",
+                  bookmark_name : bookmark_name,
+                  listing_id : listing_id,
+                },
+                success  : function(response) {
+                    $("#listeo_add_to_wishlist_"+listing_id).hide();
+                    $("#2_listeo_add_to_wishlist_"+listing_id).hide();
+                    $("#listeo_remove_to_wishlist_"+listing_id).show();
+                    $("#2_listeo_remove_to_wishlist_"+listing_id).show();
+
+                    if(response.current_user_wishlist_main != ""){
+                      $(".current_user_wishlist_main").html(response.current_user_wishlist_main);
+                    }
+
+                    $(".mfp_close_wishlist_defualt").trigger("click");
+                },
+                complete: function() {
+                    $(thisobj).prop('disabled',false);
+                    $(thisobj).removeClass('listeo_custom_loading');
+                    $("#listeo_add_to_wishlist_"+listing_id).hide();
+                    $("#2_listeo_add_to_wishlist_"+listing_id).hide();
+                    $("#listeo_remove_to_wishlist_"+listing_id).show();
+                    $("#2_listeo_remove_to_wishlist_"+listing_id).show();
+                    $(".mfp_close_wishlist_defualt").trigger("click");
+                }
+            });
+        }
+        else{
+            $(".listeo_new_wishlist_name_err").show();
+            $(".listeo_save_new_wishlist_btn").prop('disabled',true);
+        }
+    });
+
+    // Change bookmark and add listing
+    $("body").on('click','.save_listing_wishlist_name_btn',function(e){
+        var thisobj = $(this);
+        $(thisobj).prop('disabled',true);
+        $(thisobj).addClass('listeo_custom_loading');
+        var bookmark_name = $(this).attr('data-bookmark_name');
+        var listing_id = $(this).attr('data-listing_id');
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: listeo.ajaxurl,
+            data   : {
+              action: "listeo_core_create_bookmark",
+              bookmark_name : bookmark_name,
+              listing_id : listing_id,
+            },
+            success  : function(response) {
+                $("#listeo_add_to_wishlist_"+listing_id).hide();
+                $("#2_listeo_add_to_wishlist_"+listing_id).hide();
+                $("#listeo_remove_to_wishlist_"+listing_id).show();
+                $("#2_listeo_remove_to_wishlist_"+listing_id).show();
+                $(".mfp_close_wishlist_defualt").trigger("click");
+            },
+            complete: function() {
+                $(thisobj).prop('disabled',false);
+                $(thisobj).removeClass('listeo_custom_loading');
+                $("#listeo_add_to_wishlist_"+listing_id).hide();
+                $("#2_listeo_add_to_wishlist_"+listing_id).hide();
+                $("#listeo_remove_to_wishlist_"+listing_id).show();
+                $("#2_listeo_remove_to_wishlist_"+listing_id).show();
+                $(".mfp_close_wishlist_defualt").trigger("click");
+            }
+        });
+    });
+
+    // Remove from wishlist
+    $("body").on('click','.listeo_remove_to_wishlist',function(e){ 
+        var thisobj = $(this);
+        $(thisobj).prop('disabled',true);
+        $(thisobj).addClass('listeo_custom_loading');
+        var listing_id = $(this).data('post_id');
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: listeo.ajaxurl,
+            data   : {
+                action: "listeo_core_remove_listing_from_bookmark",
+                listing_id : listing_id,
+            },
+            success  : function(response) {
+                $("#listeo_remove_to_wishlist_"+listing_id).hide();
+                $("#2_listeo_remove_to_wishlist_"+listing_id).hide();
+                $("#listeo_add_to_wishlist_"+listing_id).show();
+                $("#2_listeo_add_to_wishlist_"+listing_id).show();
+            },
+            complete: function() {
+                $(thisobj).prop('disabled',false);
+                $(thisobj).removeClass('listeo_custom_loading');
+                $("#listeo_remove_to_wishlist_"+listing_id).hide();
+                $("#2_listeo_remove_to_wishlist_"+listing_id).hide();
+                $("#listeo_add_to_wishlist_"+listing_id).show();
+                $("#2_listeo_add_to_wishlist_"+listing_id).show();
+            }
+        });
+    });
+    /* Custom Wishlist End */
 
     })(this.jQuery);
     /**/
@@ -2386,7 +2561,41 @@ jQuery("#contact-message").blur(function() {
 function filter_hyply_chat_message(message){
   if(
     message.includes('www') ||
-    message.includes('com') ||
+    message.includes('.com') ||
+    message.includes('fb') ||
+    message.includes('Facebook') ||
+    message.includes('instagram') ||
+    message.includes('insta') ||
+    message.includes('@') ||
+    message.includes('call') ||
+    message.includes('website') ||
+    message.includes('visit') ||
+    message.includes('search') ||
+    message.includes('find us') ||
+    message.includes('google') ||
+    message.includes('username') ||
+    message.includes('mail') ||
+    message.includes('contact') ||
+    message.includes('phone number') ||
+    message.includes('Email id') ||
+    message.includes('Email address') ||
+    message.includes('business name') ||
+    message.includes('site') ||
+    message.includes('Email')) {
+    var email_text_found = 1;
+    //console.log("email found");
+  }
+  else {
+      var email_text_found = 0;
+  }
+
+  return email_text_found;
+}
+
+function filter_hyply_chat_message_old(message){
+  if(
+    message.includes('www') ||
+    message.includes('.com') ||
     message.includes('fb') ||
     message.includes('Facebook') ||
     message.includes('instagram') ||

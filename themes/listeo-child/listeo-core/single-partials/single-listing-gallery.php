@@ -72,9 +72,11 @@ if($count_gallery == 1) {
 		                echo '</div>';
 		            }
 
-                    if($gallery_count == 0 || $gallery_count == 4) {
+                    if($gallery_count == 0 || $gallery_count == 4 || $count_gallery == $gallery_count+1) {
 		                echo '</div>';
 		            }
+
+
 
 		            
 	            }
@@ -97,9 +99,10 @@ if($count_gallery == 1) {
 		    $gallery_count2++;
 		}
 		echo '</div>';
-        if($gallery_count2 > 2){
+        if($gallery_count2 > 1){
 		    echo '<div style="display:none;" class="listeo_gallery_count_photos"> <span class="listeo_gallery_currentslide"> 1 </span>/<span> '.$gallery_count2.' </span> </div>';
         }
+		echo '</div>';
 		echo '</div>';
     
     ?>

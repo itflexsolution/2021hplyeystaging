@@ -346,8 +346,6 @@ class Listeo_Core_Messages {
 
     public function send_message_ajax() {
 
-    	//echo "here";
-
         $recipient = $_REQUEST['recipient'];
         $referral = $_REQUEST['referral'];
 		$message = $_REQUEST['message'];
@@ -364,7 +362,6 @@ class Listeo_Core_Messages {
         $con_exists = $this->conversation_exists($recipient,$referral);
         $new_converstation  = ($con_exists) ? $con_exists : $this->start_conversation($conv_arr) ;
         
-
         if($new_converstation){
             $message = $_REQUEST['message'];
             $mess_arr = array();
@@ -379,6 +376,7 @@ class Listeo_Core_Messages {
         if($id) {
             $result['type'] = 'success';
             $result['message'] = __( 'Your message was successfully sent' , 'listeo_core' );
+            $result['attachement_id'] = $att_id;
         } else {
             $result['type'] = 'error';
             $result['message'] = __( 'Message couldn\'t be send' , 'listeo_core' );

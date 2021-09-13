@@ -16,7 +16,7 @@ if(empty($gallery_style)) { $gallery_style = get_option('listeo_gallery_type','t
 $count_gallery = listeo_count_gallery_items($post->ID);
 
 if($count_gallery < 4 ){
-	$gallery_style = 'content';	
+	$gallery_style = 'top';	
 }
 if( get_post_meta( $post->ID, '_gallery_style', true ) == 'top' && $count_gallery == 1 ) {
 	//$gallery_style = 'none';	

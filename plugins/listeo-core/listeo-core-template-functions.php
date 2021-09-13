@@ -2325,3 +2325,25 @@ function listeo_get_users_name( $user_id = null ) {
 
  return $user_info->display_name;
 }
+
+function listeo_custom_check_if_wishlisted($id){
+	if(is_user_logged_in()){
+		$user_id = get_current_user_id();
+		
+		$current_user_wishlist = get_user_meta( $user_id, 'listeo_user_wishlist',true);
+		
+		if( !empty( $current_user_wishlist ) ){
+			foreach( $current_user_wishlist as $keyy => $user_wishlist ){
+				if (($key = array_search($id, $user_wishlist)) !== false) {
+				    return $keyy;
+				}
+			}
+		}
+		else{
+			return false;
+		}
+	}
+	else{
+		return false;
+	}
+}
