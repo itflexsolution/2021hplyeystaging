@@ -532,3 +532,16 @@ span.close_modal_info_tag:after {
   display: -webkit-box;
 }
 /*---------------------------------*/
+
+/*Search ratings start*/
+
+.listeo_grid_view_item h3.listeo_single_list_title.listo-hed-h3-new.full_width {
+    width: 65% !important;
+}
+
+/*Search ratings end*/
+
+
+
+
+
